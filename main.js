@@ -1,9 +1,35 @@
 
+var socket = io.connect("http://76.28.150.193:8888");
+var gameStateStr = "";
+var gameEngine;
+
+socket.on("load", function (data) {
+    console.log(data);
+    gameStateStr = data.toString();
+});
+
+window.onload = function () {
+    socket.emit("load", {studentname: "slsnyder", statename: "cgolstate"});
+    
+    socket.on("connect", function () {
+        console.log("Socket connected.")
+    });
+    socket.on("disconnect", function () {
+        console.log("Socket disconnected.")
+    });
+    socket.on("reconnect", function () {
+        console.log("Socket reconnected.")
+    });
+
+};
+
+window.beforeunload = function () {
+    socket.emit("save", { message: "slsnyder", username: "cgolstate", data: gameEngine.getGameState() });
+}
 
 function Cell(game, yIndex, xIndex) {
     this.cellTimer = 0;
     this.game = game;
-    //this.alive = INIT_STATE[yIndex][xIndex];
     this.alive = this.game.gameState[yIndex][xIndex];
     this.aliveNext = this.alive;
     this.x = xIndex * CELL_W;
@@ -58,11 +84,18 @@ ASSET_MANAGER.downloadAll(function () {
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
     
-    //load state here? replace INIT_STATE
-    // possible if/else if there is no state saved.
     
 
-    var gameEngine = new GameEngine(INIT_STATE);
+    theState = new Array();
+    for (var i = 0; i < (CANVAS_H / CELL_H); i++) {
+        theState.push(new Array());
+        for (var j = 0; j < (CANVAS_W / CELL_W); j++) {
+            theState[i].push(gameStateStr.charAt( (i * (CANVAS_W / CELL_W)) + j ));
+        }
+    }
+
+    gameEngine = new GameEngine(INIT_STATE);
+    //gameEngine = new GameEngine(theState);
     
     var allCells = new Array();
     for (var i = 0; i < (CANVAS_H / CELL_H); i++){

@@ -1,7 +1,5 @@
 // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 
-var currentGameState;
-
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -39,7 +37,6 @@ function GameEngine(gameState) {
     this.surfaceWidth = null;
     this.surfaceHeight = null;
     this.gameState = gameState;
-    currentGameState = gameState;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -63,6 +60,8 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
+    
+    
 
     console.log('Input started');
 }
@@ -117,17 +116,19 @@ GameEngine.prototype.loop = function () {
 }
 
 //use this to save the state
-GameEngine.prototype.updateCurrentGameState = function() {
+GameEngine.prototype.getGameState = function() {
+    var myState = ""
     var entitiesCount = this.entities.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
 
         if (entity.alive) {
-            currentGameState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 1;
+            myState = myState.concat("1");
         } else {
-            currentGameState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 0;
+            myState = myState.concat("0");
         }
     }
+    return myState;
 }
 
 
