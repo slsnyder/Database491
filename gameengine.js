@@ -60,8 +60,6 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
-    
-    
 
     console.log('Input started');
 }
@@ -117,15 +115,15 @@ GameEngine.prototype.loop = function () {
 
 //use this to save the state
 GameEngine.prototype.getGameState = function() {
-    var myState = ""
+    var myState = this.gameState;
     var entitiesCount = this.entities.length;
     for (var i = 0; i < entitiesCount; i++) {
         var entity = this.entities[i];
 
         if (entity.alive) {
-            myState = myState.concat("1");
+            myState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 1;
         } else {
-            myState = myState.concat("0");
+            myState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 0;
         }
     }
     return myState;

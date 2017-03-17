@@ -1,11 +1,11 @@
 
 var socket = io.connect("http://76.28.150.193:8888");
-var gameStateStr = "";
+var gameState = "";
 var gameEngine;
 
 socket.on("load", function (data) {
     console.log(data);
-    gameStateStr = data.toString();
+    gameState = data;
 });
 
 window.onload = function () {
@@ -83,19 +83,9 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("starting up");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-    
-    
-
-    theState = new Array();
-    for (var i = 0; i < (CANVAS_H / CELL_H); i++) {
-        theState.push(new Array());
-        for (var j = 0; j < (CANVAS_W / CELL_W); j++) {
-            theState[i].push(gameStateStr.charAt( (i * (CANVAS_W / CELL_W)) + j ));
-        }
-    }
 
     gameEngine = new GameEngine(INIT_STATE);
-    //gameEngine = new GameEngine(theState);
+    //gameEngine = new GameEngine(gameState);
     
     var allCells = new Array();
     for (var i = 0; i < (CANVAS_H / CELL_H); i++){
