@@ -4,13 +4,14 @@ var gameState;
 var gameEngine;
 
 socket.on("load", function (data) {
+    console.log("load?");
     console.log(data);
     gameState = data;
 });
 
+socket.emit("load", {studentname: "slsnyder", statename: "cgolstate"});
+
 window.onload = function () {
-    socket.emit("load", {studentname: "slsnyder", statename: "cgolstate"});
-    
     socket.on("connect", function () {
         console.log("Socket connected.")
     });
@@ -20,12 +21,15 @@ window.onload = function () {
     socket.on("reconnect", function () {
         console.log("Socket reconnected.")
     });
-
 };
 
-window.beforeunload = function () {
-    socket.emit("save", { message: "slsnyder", username: "cgolstate", data: gameEngine.getGameState() });
-}
+window.addEventListener("keydown", function (e) {
+        console.log(e);
+        console.log("Key Down Event - Char " + e.code + " Code " + e.keyCode);
+		if (String.fromCharCode(e.which) === 's') {
+            socket.emit("save", {studentname: "slsnyder", statename: "cgolstate", data: gameEngine.getGameState()});
+        }
+    }, false);
 
 function Cell(game, yIndex, xIndex) {
     this.cellTimer = 0;

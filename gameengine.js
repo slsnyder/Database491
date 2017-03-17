@@ -118,9 +118,7 @@ GameEngine.prototype.getGameState = function() {
     var myState = this.gameState;
     var entitiesCount = this.entities.length;
     for (var i = 0; i < entitiesCount; i++) {
-        var entity = this.entities[i];
-
-        if (entity.alive) {
+        if (this.entities[i].alive) {
             myState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 1;
         } else {
             myState[Math.floor(i / this.gameState[0].length)][i % this.gameState[0].length] = 0;
