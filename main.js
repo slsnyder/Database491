@@ -1,6 +1,6 @@
 
 var socket = io.connect("http://76.28.150.193:8888");
-var gameState = "";
+var gameState;
 var gameEngine;
 
 socket.on("load", function (data) {
