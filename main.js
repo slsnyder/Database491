@@ -3,7 +3,8 @@
 function Cell(game, yIndex, xIndex) {
     this.cellTimer = 0;
     this.game = game;
-    this.alive = START_STATE[yIndex][xIndex];
+    //this.alive = INIT_STATE[yIndex][xIndex];
+    this.alive = this.game.gameState[yIndex][xIndex];
     this.aliveNext = this.alive;
     this.x = xIndex * CELL_W;
     this.y = yIndex * CELL_H;
@@ -56,8 +57,12 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("starting up");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
+    
+    //load state here? replace INIT_STATE
+    // possible if/else if there is no state saved.
+    
 
-    var gameEngine = new GameEngine();
+    var gameEngine = new GameEngine(INIT_STATE);
     
     var allCells = new Array();
     for (var i = 0; i < (CANVAS_H / CELL_H); i++){
